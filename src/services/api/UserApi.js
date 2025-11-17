@@ -90,24 +90,6 @@ export const deleteSearch = async (index) => {
   }
 }
 
-export const getChatHistory = async () => {
-  try {
-    const response = await AxiosInstance.get("/user/get-chat-history");
-    return response.data;
-  } catch (error) {
-    return error.response?.data || "Lỗi kết nối đến server";
-  }
-}
-
-export const deleteChatHistory = async () => {
-  try {
-    const response = await AxiosInstance.delete("/user/delete-chat-history");
-    return response.data;
-  } catch (error) {
-    return error.response?.data || "Lỗi kết nối đến server";
-  }
-}
-
 export const getChatBotSearch = async (query) => {
   try {
       const response = await AxiosInstance.get("/chat", {

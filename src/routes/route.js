@@ -11,13 +11,16 @@ import Dashboard from "../admin/pages/Dashboard";
 import Orders from "../admin/pages/Orders";
 import Products from "../admin/pages/Products";
 import Customers from "../admin/pages/Customers";
+import Warehouses from "../admin/pages/Warehouses";
 import AdminLayout from "../admin/layout/AdminLayout";
 import Discounts from "../admin/pages/Discounts";
 import Categories from "../admin/pages/Categories";
-import OrderDetailsPage from "../pages/OrderDetailsPage/OrderDetailsPage";
-import NotFoundPage from "../pages/NotFouldPage/NotFouldPage";
-import OrderFeedbackPage from "../pages/OrderFeedbackPage/OrderFeedbackPage";
-import AccountPage from "../pages/AccountPage/AccountPage";
+import MyStore from "../admin/pages/MyStore";
+import LoginHistory from "../admin/pages/LoginHistory";
+import LoginHistoryDetails from "../admin/pages/LoginHistoryDetails";
+import SellReceipts from "../admin/pages/SellReceipts";
+import SellReceiptDetails from "../admin/pages/SellReceiptDetails";
+import PurchaseReceipts from "../admin/pages/PurchaseReceipts";
 
 import Profile from "../pages/AccountPage/PageChildren/Profile";
 import EditEmail from "../pages/AccountPage/PageChildren/EditMail";
@@ -34,9 +37,10 @@ import SearchPage from "../pages/SearchPage/SearchPage";
 import AboutUsPage from "../pages/AboutUsPage/AboutUsPage";
 import PrivatePolicyPage from "../pages/PrivatePolicyPage/PrivatePolicyPage";
 import TermOfUsePage from "../pages/TermOfUsePage/TermOfUsePage";
-import MyStore from "../admin/pages/MyStore";
-import LoginHistory from "../admin/pages/LoginHistory";
-import LoginHistoryDetails from "../admin/pages/LoginHistoryDetails";
+import OrderDetailsPage from "../pages/OrderDetailsPage/OrderDetailsPage";
+import NotFoundPage from "../pages/NotFouldPage/NotFouldPage";
+import OrderFeedbackPage from "../pages/OrderFeedbackPage/OrderFeedbackPage";
+import AccountPage from "../pages/AccountPage/AccountPage";
 
 const publicRoutes = [
   {
@@ -60,12 +64,10 @@ const publicRoutes = [
     component: ProductPage,
   },
   {
-
     path: "/search",
     component: SearchPage,
   },
   {
-
     path: "/product/:id",
     component: ProductDetailsPage,
   },
@@ -91,11 +93,11 @@ const publicRoutes = [
   },
   {
     path: "/private-policy",
-    component: PrivatePolicyPage
+    component: PrivatePolicyPage,
   },
   {
     path: "/term-of-use",
-    component: TermOfUsePage
+    component: TermOfUsePage,
   },
   {
     path: "*",
@@ -151,7 +153,7 @@ const privateRoutes = [
   {
     path: "/vouchers",
     component: VoucherPage,
-  }
+  },
 ];
 
 const adminRoutes = [
@@ -183,6 +185,26 @@ const adminRoutes = [
   {
     path: "/admin/product-details/:id",
     component: ProductDetails,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/sell-receipts",
+    component: SellReceipts,
+    Layout: AdminLayout,
+  },
+    {
+    path: "/admin/sell-receipt/:id",
+    component: SellReceiptDetails,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/purchase-receipts",
+    component: PurchaseReceipts,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/warehouses",
+    component: Warehouses,
     Layout: AdminLayout,
   },
   {

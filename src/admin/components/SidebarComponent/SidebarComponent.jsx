@@ -11,6 +11,8 @@ import logo from "../../../assets/images/logo.png";
 import { useAuth } from "../../../context/AuthContext";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { GoHistory } from "react-icons/go";
+import { LuWarehouse } from "react-icons/lu";
+import { IoReceiptOutline } from "react-icons/io5";
 
 function SidebarComponent({ isOpen, toggleSidebar }) {
   const location = useLocation();
@@ -43,6 +45,21 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       name: "Quản lý khách hàng",
       path: "/admin/customers",
       icon: <FiUsers size={20} />,
+    },
+        {
+      name: "Quản lý phiếu bán hàng",
+      path: "/admin/sell-receipts",
+      icon: <IoReceiptOutline size={20} />,
+    },
+        {
+      name: "Quản lý phiếu nhập hàng",
+      path: "/admin/purchase-receipts",
+      icon: <IoReceiptOutline size={20} />,
+    },
+    {
+      name: "Quản lý kho",
+      path: "/admin/warehouses",
+      icon: <LuWarehouse size={20} />,
     },
     {
       name: "Cửa hàng của tôi",

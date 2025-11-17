@@ -12,6 +12,9 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { PopupProvider } from "./context/PopupContext.jsx";
 import { LoadingProvider } from "./context/LoadingContext.jsx";
 import { NotificationProvider } from "./context/NotificationContext.jsx";
+import { PurchaseOrderProvider } from "./context/PurchaseOrderContext.jsx";
+import { SupplierProvider } from "./context/SupplierContext.jsx";
+import { SaleInvoiceProvider } from "./context/SaleInvoiceContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -26,7 +29,13 @@ createRoot(document.getElementById("root")).render(
                     <CategoriesProvider>
                       <OrderProvider>
                         <CartProvider>
-                          <App />
+                          <PurchaseOrderProvider>
+                            <SupplierProvider>
+                              <SaleInvoiceProvider>
+                                <App />
+                              </SaleInvoiceProvider>
+                            </SupplierProvider>
+                          </PurchaseOrderProvider>
                         </CartProvider>
                       </OrderProvider>
                     </CategoriesProvider>

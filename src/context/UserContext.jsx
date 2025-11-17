@@ -9,8 +9,6 @@ import {
   deleteAddress,
   getDiscount,
   deleteSearch,
-  getChatHistory,
-  deleteChatHistory,
 } from "../services/api/UserApi";
 import { message } from "antd";
 import { useAuth } from "./AuthContext";
@@ -93,14 +91,6 @@ export const UserProvider = ({ children }) => {
     return await deleteSearch(index);
   };
 
-  const handleGetChatHistory = async () => {
-    return await getChatHistory();
-  };
-
-  const handleDeleteChatHistory = async () => {
-    return await deleteChatHistory();
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -116,8 +106,6 @@ export const UserProvider = ({ children }) => {
         handleDeleteAddress,
         handleGetDiscount,
         handleDeleteSearch,
-        handleGetChatHistory,
-        handleDeleteChatHistory,
       }}
     >
       {children}

@@ -15,32 +15,25 @@ const ProductPage = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const queryParams = new URLSearchParams(location.search);
 
-  const category = queryParams.get("category") || "";
-  const category_gender = queryParams.get("category_gender") || "";
-  const category_sub = queryParams.get("category_sub") || "";
-
   useEffect(() => {
-    // const searchParams = {
-    //   category,
-    //   category_gender,
-    //   category_sub,
-    // };
+    const queryParams = new URLSearchParams(location.search);
+    const category = queryParams.get("category") || "";
+    const category_gender = queryParams.get("category_gender") || "";
+    const category_sub = queryParams.get("category_sub") || "";
 
-    setSelectedFilters((prev) => {
-      const newFilters = {
-        ...prev,
-        category: category ? [category] : prev.category,
-        category_gender: category_gender || prev.category_gender,
-        category_sub: category_sub || prev.category_sub,
+    const hasQuery = category || category_gender || category_sub;
+
+    if (hasQuery) {
+      const filters = {
+        category: category ? [category] : undefined,
+        category_gender: category_gender || undefined,
+        category_sub: category_sub || undefined,
       };
-      fetchProducts(newFilters);
-      return newFilters;
-    });
-  }, [category, category_gender, category_sub]);
 
-  useEffect(() => {
-    fetchProducts(selectedFilters);
-  }, [selectedFilters]);
+      setSelectedFilters(filters);
+      fetchProducts(filters);
+    }
+  }, [location.search]);
 
   const { token } = useAuth();
   const [favourites, setFavourites] = useState([]);
@@ -99,7 +92,7 @@ const ProductPage = () => {
     setCurrentSort(sortOption);
     setSortText(sortOption);
     setSortOpen(false);
-
+    setCurrentPage(1);
     applySorting(sortOption, sortProducts);
   };
 
@@ -126,12 +119,18 @@ const ProductPage = () => {
     }
 
     setSortProducts(sortedProducts);
+    setCurrentPage(1);
   };
 
   const navigate = useNavigate();
 
   const totalPages = Math.ceil(sortProducts.length / 12);
-
+  useEffect(() => {
+    const totalPages = Math.ceil(sortProducts.length / 12);
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [sortProducts]);
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
     function handleClickOutside(event) {
