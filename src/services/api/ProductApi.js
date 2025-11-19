@@ -178,3 +178,26 @@ export const getAllProducts = async (filters) => {
     return error.response?.data || "Lỗi kết nối đến server";
   }
 };
+
+export const getInventoryReport = async (month, categoryId) => {
+  try {
+    const res = await AxiosInstance.get("/product/inventory/report", {
+      params: { month, categoryId },
+    });
+    return res.data;
+  } catch (error) {
+    return error.response?.data || "Lỗi kết nối server";
+  }
+};
+
+export const exportInventoryExcel = async (month, categoryId) => {
+  try {
+    const res = await AxiosInstance.get("/export/inventory-excel", {
+      params: { month, categoryId },
+      responseType: "blob",
+    });
+    return res;
+  } catch (error) {
+    return error.response || "Lỗi kết nối server";
+  }
+};

@@ -1,18 +1,27 @@
 import { createContext, useContext, useState } from "react";
-import { getAllProducts, createProduct, updateProduct, deleteProduct, getDetailsProduct } from "../services/api/ProductApi";
+import {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getDetailsProduct,
+  getInventoryReport,
+  exportInventoryExcel,
+} from "../services/api/ProductApi";
 
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
-  const [productDetails, setProductDetails] = useState(null); 
+  const [productDetails, setProductDetails] = useState(null);
+  const [inventoryReport, setInventoryReport] = useState([]);
 
   const fetchProducts = async (filters = {}) => {
     const res = await getAllProducts(filters);
     if (res?.EC === 0) {
-        setProducts(res.result.products);
+      setProducts(res.result.products);
     } else {
-        return;
+      return;
     }
     return res;
   };
@@ -20,12 +29,11 @@ export const ProductProvider = ({ children }) => {
   const fetchProductDetails = async (productId) => {
     const res = await getDetailsProduct(productId);
     if (res?.EC === 0) {
-        setProductDetails(res.result);
+      setProductDetails(res.result);
     } else {
-        return;
+      return;
     }
     return res.result;
-    
   };
 
   const addProduct = async (productData) => {
@@ -36,11 +44,9 @@ export const ProductProvider = ({ children }) => {
 
   const editProduct = async (productId, updatedData) => {
     const res = await updateProduct(productId, updatedData);
-    
+
     setProducts((prev) =>
-      prev.map((product) =>
-        product?._id === productId ? res.data : product
-      )
+      prev.map((product) => (product?._id === productId ? res.data : product))
     );
 
     return res;
@@ -52,21 +58,36 @@ export const ProductProvider = ({ children }) => {
     return res;
   };
 
-  
+  const fetchInventoryReport = async (month, categoryId) => {
+    const res = await getInventoryReport(month, categoryId);
+    if (res?.EC === 0) {
+      setInventoryReport(res.result.report);
+    }
+
+    return res;
+  };
+
+  const handleExportInventoryExcel = async (month, categoryId) => {
+    return await exportInventoryExcel(month, categoryId);
+  };
 
   return (
-    <ProductContext.Provider 
-      value={{ 
+    <ProductContext.Provider
+      value={{
         products,
         productDetails,
         setProducts,
         setProductDetails,
-        fetchProducts, 
-        fetchProductDetails, 
-        addProduct, 
-        editProduct, 
-        removeProduct 
-    }}>
+        inventoryReport,
+        fetchProducts,
+        fetchProductDetails,
+        addProduct,
+        editProduct,
+        removeProduct,
+        fetchInventoryReport,
+        handleExportInventoryExcel,
+      }}
+    >
       {children}
     </ProductContext.Provider>
   );
