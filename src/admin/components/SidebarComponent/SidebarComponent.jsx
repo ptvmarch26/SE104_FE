@@ -14,6 +14,7 @@ import { GoHistory } from "react-icons/go";
 import { LuWarehouse } from "react-icons/lu";
 import { IoReceiptOutline } from "react-icons/io5";
 import { MdRoomService } from "react-icons/md";
+import { FaPeopleArrows } from "react-icons/fa6";
 
 function SidebarComponent({ isOpen, toggleSidebar }) {
   const location = useLocation();
@@ -46,6 +47,11 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       name: "Quản lý khách hàng",
       path: "/admin/customers",
       icon: <FiUsers size={20} />,
+    },
+    {
+      name: "Quản lý nhà cung cấp",
+      path: "/admin/suppliers",
+      icon: <FaPeopleArrows size={20} />,
     },
     {
       name: "Quản lý phiếu bán hàng",
@@ -98,7 +104,8 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
 
       <div
         className={`fixed top-0 left-0 z-[60] h-screen w-[300px] bg-gray-900 text-white shadow-lg transition-transform duration-300 
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
+    ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
+    overflow-y-auto`}
       >
         <div className="flex items-center justify-center my-5">
           <img

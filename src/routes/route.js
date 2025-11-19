@@ -23,6 +23,7 @@ import SellReceiptDetails from "../admin/pages/SellReceiptDetails";
 import PurchaseReceipts from "../admin/pages/PurchaseReceipts";
 import WarrantyTickets from "../admin/pages/WarrantyTickets";
 import WarrantyTicketDetails from "../admin/pages/WarrantyTicketDetails";
+import Suppliers from "../admin/pages/Suppliers";
 
 import Profile from "../pages/AccountPage/PageChildren/Profile";
 import EditEmail from "../pages/AccountPage/PageChildren/EditMail";
@@ -187,6 +188,11 @@ const adminRoutes = [
   {
     path: "/admin/product-details/:id",
     component: ProductDetails,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/suppliers",
+    component: Suppliers,
     Layout: AdminLayout,
   },
   {

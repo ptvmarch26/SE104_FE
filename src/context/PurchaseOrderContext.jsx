@@ -26,11 +26,25 @@ export const PurchaseOrderProvider = ({ children }) => {
   };
 
   const handleCreatePurchaseOrder = async (supplier, items) => {
-    return await createPurchaseOrder(supplier, items);
+    const res = await createPurchaseOrder(supplier, items);
+
+    if (res.EC === 0) {
+      setOrders((prev) => [res.result, ...prev]);
+    }
+
+    return res;
   };
 
   const handleUpdatePurchaseOrder = async (id, updateData) => {
-    return await updatePurchaseOrder(id, updateData);
+    const res = await updatePurchaseOrder(id, updateData);
+
+    if (res.EC === 0) {
+      setOrders((prev) =>
+        prev.map((order) => (order._id === id ? res.result : order))
+      );
+    }
+
+    return res;
   };
 
   return (

@@ -25,7 +25,13 @@ export const SaleInvoiceProvider = ({ children }) => {
   };
 
   const handleCreateSaleInvoice = async (invoiceData) => {
-    return await createSaleInvoice(invoiceData);
+    const res = await createSaleInvoice(invoiceData);
+
+    if (res.EC === 0) {
+      setInvoices((prev) => [res.result, ...prev]);
+    }
+
+    return res;
   };
 
   return (

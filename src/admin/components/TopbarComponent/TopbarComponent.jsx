@@ -13,6 +13,7 @@ function TopbarComponent({ admin_name, toggleSidebar }) {
     "/admin/customers": "Danh sách khách hàng",
     "/admin/employees": "Danh sách nhân viên",
     "/admin/discounts": "Danh sách mã giảm giá",
+    "/admin/suppliers": "Danh sách nhà cung cấp",
     "/admin/sell-receipts": "Danh sách phiếu bán hàng",
     "/admin/purchase-receipts": "Danh sách phiếu nhập hàng",
     "/admin/warranty-tickets": "Danh sách phiếu bảo hành",
