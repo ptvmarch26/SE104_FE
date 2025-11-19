@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useOrder } from "../../context/OrderContext";
-import { Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import { getPaymentInfoByOrderCode } from "../../services/api/PaymentApi";
+import WarrantyTicketCreateModal from "../components/WarrantyTicketCreateModal/WarrantyTicketCreateModal";
 
 const statusColors = {
   "Chờ xác nhận": "orange",
@@ -18,6 +19,7 @@ const OrderDetails = () => {
   const { id } = useParams();
   const { orderDetails, fetchOrderDetail } = useOrder();
   const [paymentInfo, setPaymentInfo] = useState(null);
+  const [openCreate, setOpenCreate] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,10 +129,20 @@ const OrderDetails = () => {
     },
   ];
 
-  console.log("paymentInfo", paymentInfo)
-
   return (
     <div className="lg:ml-[300px] mt-[64px] px-2 py-4 lg:p-6 min-h-screen bg-gray-100">
+      {order_status === "Hoàn thành" && (
+        <div className="flex justify-end">
+          <Button
+            type="primary"
+            className="rounded-none"
+            onClick={() => setOpenCreate(true)}
+          >
+            Thêm phiếu bảo hành
+          </Button>
+        </div>
+      )}
+
       <div className="bg-white flex flex-col sm:flex-row gap-5 justify-between sm:items-center p-6 shadow-lg rounded-lg mt-4">
         <p>
           <strong>Ngày mua hàng:</strong> {new Date(createdAt).toLocaleString()}
@@ -243,6 +255,11 @@ const OrderDetails = () => {
           <h3 className="font-semibold">Đánh giá sản phẩm</h3>
         </div>
       )}
+      <WarrantyTicketCreateModal
+        open={openCreate}
+        setOpen={setOpenCreate}
+        order={orderDetails}
+      />
     </div>
   );
 };

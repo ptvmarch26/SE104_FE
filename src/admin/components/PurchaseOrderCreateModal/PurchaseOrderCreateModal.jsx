@@ -103,8 +103,8 @@ const PurchaseOrderCreateModal = ({ open, setOpen }) => {
       open={open}
       onCancel={() => setOpen(false)}
       width={900}
-      onOk={handleSubmit}
       title="Tạo Phiếu Nhập Hàng"
+      footer={null}
     >
       <div className="flex flex-col gap-2 mb-4">
         <label className="font-semibold">Nhà cung cấp</label>
@@ -222,6 +222,13 @@ const PurchaseOrderCreateModal = ({ open, setOpen }) => {
           rowKey={(r) => r.product + r.color_name + r.variant_size}
           pagination={false}
         />
+      </div>
+      <div className="flex justify-end gap-3 mt-4">
+        <Button onClick={() => setOpen(false)}>Hủy</Button>
+
+        <Button type="primary" onClick={handleSubmit}>
+          Thêm
+        </Button>
       </div>
     </Modal>
   );

@@ -15,6 +15,7 @@ import { NotificationProvider } from "./context/NotificationContext.jsx";
 import { PurchaseOrderProvider } from "./context/PurchaseOrderContext.jsx";
 import { SupplierProvider } from "./context/SupplierContext.jsx";
 import { SaleInvoiceProvider } from "./context/SaleInvoiceContext.jsx";
+import { WarrantyProvider } from "./context/WarrantyContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -32,7 +33,9 @@ createRoot(document.getElementById("root")).render(
                           <PurchaseOrderProvider>
                             <SupplierProvider>
                               <SaleInvoiceProvider>
-                                <App />
+                                <WarrantyProvider>
+                                  <App />
+                                </WarrantyProvider>
                               </SaleInvoiceProvider>
                             </SupplierProvider>
                           </PurchaseOrderProvider>

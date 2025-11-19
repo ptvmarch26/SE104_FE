@@ -123,8 +123,8 @@ const SaleInvoiceCreateModal = ({ open, setOpen }) => {
       open={open}
       onCancel={() => setOpen(false)}
       width={900}
-      onOk={handleSubmit}
       title="Tạo Phiếu Bán Hàng"
+      footer={null}
     >
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="flex flex-col">
@@ -257,6 +257,13 @@ const SaleInvoiceCreateModal = ({ open, setOpen }) => {
         <div className="text-lg font-bold text-red-600">
           Còn lại: {remaining.toLocaleString()}đ
         </div>
+      </div>
+      <div className="flex justify-end gap-3 mt-4">
+        <Button onClick={() => setOpen(false)}>Hủy</Button>
+
+        <Button type="primary" onClick={handleSubmit}>
+          Thêm
+        </Button>
       </div>
     </Modal>
   );
