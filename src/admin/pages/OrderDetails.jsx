@@ -219,7 +219,7 @@ const OrderDetails = () => {
         <h3 className="font-semibold">Sản phẩm</h3>
         <Table
           dataSource={formattedProducts}
-          rowKey="_id"
+          rowKey={(item) => item.product_id + item.variant}
           columns={columns}
           pagination={false}
           bordered

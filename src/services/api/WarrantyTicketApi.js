@@ -11,6 +11,15 @@ export const getWarrantyTickets = async (status) => {
   }
 };
 
+export const getWarrantyTicketById = async (id) => {
+  try {
+    const res = await AxiosInstance.get(`/warranty/ticket/${id}`);
+    return res.data;
+  } catch (error) {
+    return error.response?.data || "Lỗi kết nối server";
+  }
+};
+
 export const createWarrantyTicket = async (ticketData) => {
   try {
     const res = await AxiosInstance.post("/warranty/ticket", ticketData);

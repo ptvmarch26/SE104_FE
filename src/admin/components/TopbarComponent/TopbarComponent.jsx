@@ -15,6 +15,7 @@ function TopbarComponent({ admin_name, toggleSidebar }) {
     "/admin/discounts": "Danh sách mã giảm giá",
     "/admin/sell-receipts": "Danh sách phiếu bán hàng",
     "/admin/purchase-receipts": "Danh sách phiếu nhập hàng",
+    "/admin/warranty-tickets": "Danh sách phiếu bảo hành",
     "/admin/warehouses": "Thông tin kho",
     "/admin/my-store": "Thông tin cửa hàng",
     "/admin/history": "Lịch sử đăng nhập",
@@ -24,6 +25,10 @@ function TopbarComponent({ admin_name, toggleSidebar }) {
   let currentPage = "Admin Panel";
   if (location.pathname.startsWith("/admin/order-details/")) {
     currentPage = "Chi tiết đơn hàng";
+  } else if (location.pathname.startsWith("/admin/sell-receipt/")) {
+    currentPage = "Chi tiết phiếu bán hàng";
+  } else if (location.pathname.startsWith("/admin/warranty-ticket/")) {
+    currentPage = "Chi tiết phiếu bảo hành";
   } else if (location.pathname.startsWith("/admin/history/")) {
     currentPage = "Chi tiết lịch sử";
   } else if (pageTitles[location.pathname]) {

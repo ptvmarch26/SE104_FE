@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import {
   getWarrantyTickets,
+  getWarrantyTicketById,
   createWarrantyTicket,
   updateWarrantyStatus,
 } from "../services/api/WarrantyTicketApi";
@@ -13,7 +14,13 @@ export const WarrantyProvider = ({ children }) => {
 
   const fetchWarrantyTickets = async (status = "") => {
     const data = await getWarrantyTickets(status);
-    setTickets(data?.data || []);
+    setTickets(data?.result || []);
+    return data;
+  };
+
+  const fetchWarrantyTicketById = async (id) => {
+    const data = await getWarrantyTicketById(id);
+    if (data.EC === 0) setTicketDetail(data.result);
     return data;
   };
 
@@ -41,6 +48,7 @@ export const WarrantyProvider = ({ children }) => {
         setTickets,
         setTicketDetail,
         fetchWarrantyTickets,
+        fetchWarrantyTicketById,
         handleCreateTicket,
         handleUpdateStatus,
       }}

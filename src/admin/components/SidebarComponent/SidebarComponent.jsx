@@ -13,6 +13,7 @@ import { IoStorefrontOutline } from "react-icons/io5";
 import { GoHistory } from "react-icons/go";
 import { LuWarehouse } from "react-icons/lu";
 import { IoReceiptOutline } from "react-icons/io5";
+import { MdRoomService } from "react-icons/md";
 
 function SidebarComponent({ isOpen, toggleSidebar }) {
   const location = useLocation();
@@ -46,15 +47,20 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       path: "/admin/customers",
       icon: <FiUsers size={20} />,
     },
-        {
+    {
       name: "Quản lý phiếu bán hàng",
       path: "/admin/sell-receipts",
       icon: <IoReceiptOutline size={20} />,
     },
-        {
+    {
       name: "Quản lý phiếu nhập hàng",
       path: "/admin/purchase-receipts",
       icon: <IoReceiptOutline size={20} />,
+    },
+    {
+      name: "Quản lý phiếu bảo hành",
+      path: "/admin/warranty-tickets",
+      icon: <MdRoomService size={20} />,
     },
     {
       name: "Quản lý kho",

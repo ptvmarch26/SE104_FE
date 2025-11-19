@@ -21,6 +21,8 @@ import LoginHistoryDetails from "../admin/pages/LoginHistoryDetails";
 import SellReceipts from "../admin/pages/SellReceipts";
 import SellReceiptDetails from "../admin/pages/SellReceiptDetails";
 import PurchaseReceipts from "../admin/pages/PurchaseReceipts";
+import WarrantyTickets from "../admin/pages/WarrantyTickets";
+import WarrantyTicketDetails from "../admin/pages/WarrantyTicketDetails";
 
 import Profile from "../pages/AccountPage/PageChildren/Profile";
 import EditEmail from "../pages/AccountPage/PageChildren/EditMail";
@@ -192,7 +194,7 @@ const adminRoutes = [
     component: SellReceipts,
     Layout: AdminLayout,
   },
-    {
+  {
     path: "/admin/sell-receipt/:id",
     component: SellReceiptDetails,
     Layout: AdminLayout,
@@ -200,6 +202,16 @@ const adminRoutes = [
   {
     path: "/admin/purchase-receipts",
     component: PurchaseReceipts,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/warranty-tickets",
+    component: WarrantyTickets,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/warranty-ticket/:id",
+    component: WarrantyTicketDetails,
     Layout: AdminLayout,
   },
   {

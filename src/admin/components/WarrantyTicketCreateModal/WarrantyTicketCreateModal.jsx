@@ -15,6 +15,7 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
 
   const [ticketType, setTicketType] = useState("Bảo hành");
 
+  const [selectedProductIndex, setSelectedProductIndex] = useState(null); // dùng index
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [condition, setCondition] = useState("");
@@ -27,19 +28,22 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
 
   const resetForm = () => {
     setTicketType("Bảo hành");
+    setSelectedProductIndex(null);
     setSelectedProduct(null);
     setCondition("");
     setReason("");
     setSolution("");
   };
 
-  const handleSelectProduct = (product_id) => {
-    const data = order.products.find((p) => p.product_id._id === product_id);
+  const handleSelectProduct = (index) => {
+    const p = order.products[index];
+
+    setSelectedProductIndex(index);
 
     setSelectedProduct({
-      product_id,
-      color: data.color,
-      size: data.variant,
+      product_id: p.product_id._id,
+      color: p.color,
+      size: p.variant,
     });
   };
 
@@ -104,12 +108,12 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
         <label className="font-semibold mb-1">Sản phẩm</label>
         <Select
           placeholder="Chọn sản phẩm trong đơn"
-          value={selectedProduct?.product_id}
+          value={selectedProductIndex}
           onChange={handleSelectProduct}
           className="w-full"
         >
-          {order?.products.map((p) => (
-            <Option key={p.product_id._id} value={p.product_id._id}>
+          {order?.products.map((p, idx) => (
+            <Option key={idx} value={idx}>
               {p.product_id.product_title} — {p.color}/{p.variant}
             </Option>
           ))}
@@ -160,7 +164,6 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
 
       <div className="flex justify-end gap-3 mt-4">
         <Button onClick={() => setOpen(false)}>Hủy</Button>
-
         <Button type="primary" onClick={handleSubmit}>
           Thêm
         </Button>
