@@ -69,6 +69,7 @@ const Categories = () => {
     try {
       await form.validateFields();
       const newCategory = form.getFieldsValue();
+      if (!newCategory.category_unit) newCategory.category_unit = "cái";
 
       const res = await addCategory(newCategory);
       if (res?.data?.EC === 0) {
@@ -86,12 +87,14 @@ const Categories = () => {
     try {
       await form.validateFields();
       const newCategory = form.getFieldsValue();
+      if (!newCategory.category_unit) newCategory.category_unit = "cái";
 
       const parentCategory = categories.find(
         (cat) => cat._id === newCategory.category_parent_id
       );
       newCategory.category_gender = parentCategory?.category_gender || null;
       const res = await addCategory(newCategory);
+      console.log("res", res);
       if (res?.data?.EC === 0) {
         fetchCategories();
         form.resetFields();
@@ -117,6 +120,8 @@ const Categories = () => {
     try {
       await form.validateFields();
       const updateData = form.getFieldsValue();
+      if (!updateData.category_unit) updateData.category_unit = "cái";
+
       if (
         updateData.category_level === 1 &&
         updateData.category_parent_id !== null
@@ -170,6 +175,12 @@ const Categories = () => {
         return genderMap[gender];
       },
     },
+    {
+      title: "Đơn vị tính",
+      dataIndex: "category_unit",
+      key: "category_unit",
+    },
+
     {
       title: "Chỉnh sửa",
       key: "edit",
@@ -288,6 +299,14 @@ const Categories = () => {
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            label="Đơn vị tính"
+            name="category_unit"
+            initialValue="cái"
+            rules={[{ required: true, message: "Đơn vị tính là bắt buộc" }]}
+          >
+            <Input placeholder="Ví dụ: cái, đôi, bộ..." />
+          </Form.Item>
         </Form>
       </Modal>
       <Modal
@@ -378,6 +397,13 @@ const Categories = () => {
             label="Loại danh mục"
             name="category_type"
             rules={[{ required: true, message: "Loại danh mục là bắt buộc" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Đơn vị tính"
+            name="category_unit"
+            rules={[{ required: true, message: "Đơn vị tính là bắt buộc" }]}
           >
             <Input />
           </Form.Item>
