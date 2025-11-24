@@ -9,6 +9,7 @@ import {
   deleteAddress,
   getDiscount,
   deleteSearch,
+  createStaff,
 } from "../services/api/UserApi";
 import { message } from "antd";
 import { useAuth } from "./AuthContext";
@@ -18,22 +19,20 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [discounts, setDiscounts] = useState([]);
+  const [staffList, setStaffList] = useState([]);
   const { token } = useAuth();
   const fetchUsers = async () => {
-      const data = await getAllUsers();
+    const data = await getAllUsers();
 
-      if (
-        data?.EC === 0 &&
-        Array.isArray(data.result)
-      ) {
-        const processedUsers = data.result.map((user) => ({
-          ...user,
-          status: user.deleted_at ? "Đã khóa" : "Hoạt động",
-        }));
-        return processedUsers;
-      } else {
-        message.error("Không thể tải danh sách người dùng!");
-      }
+    if (data?.EC === 0 && Array.isArray(data.result)) {
+      const processedUsers = data.result.map((user) => ({
+        ...user,
+        status: user.deleted_at ? "Đã khóa" : "Hoạt động",
+      }));
+      return processedUsers;
+    }
+
+    return [];
   };
 
   const fetchUser = async () => {
@@ -44,6 +43,25 @@ export const UserProvider = ({ children }) => {
       message.error("Không tìm thấy thông tin người dùng!");
     }
     return data;
+  };
+
+  const fetchStaff = async () => {
+    const users = await fetchUsers();
+    const staff = users.filter((u) =>
+      ["warehouse_staff", "sales_staff"].includes(u.role)
+    );
+    setStaffList(staff);
+    return staff;
+  };
+
+  const handleCreateStaff = async (staffData) => {
+    const res = await createStaff(staffData);
+
+    if (res?.EC === 0) {
+      await fetchStaff();
+    }
+
+    return res;
   };
 
   useEffect(() => {
@@ -106,6 +124,9 @@ export const UserProvider = ({ children }) => {
         handleDeleteAddress,
         handleGetDiscount,
         handleDeleteSearch,
+        fetchStaff,
+        handleCreateStaff,
+        staffList,
       }}
     >
       {children}

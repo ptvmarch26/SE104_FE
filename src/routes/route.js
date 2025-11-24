@@ -24,7 +24,7 @@ import PurchaseReceipts from "../admin/pages/PurchaseReceipts";
 import WarrantyTickets from "../admin/pages/WarrantyTickets";
 import WarrantyTicketDetails from "../admin/pages/WarrantyTicketDetails";
 import Suppliers from "../admin/pages/Suppliers";
-import CreateStaff from "../admin/pages/CreateStaff";
+import Staff from "../admin/pages/Staff";
 
 import Profile from "../pages/AccountPage/PageChildren/Profile";
 import EditEmail from "../pages/AccountPage/PageChildren/EditMail";
@@ -237,8 +237,8 @@ const adminRoutes = [
     Layout: AdminLayout,
   },
   {
-    path: "/admin/create-staff",
-    component: CreateStaff,
+    path: "/admin/staff",
+    component: Staff,
     Layout: AdminLayout,
   },
   {

@@ -49,8 +49,8 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       icon: <FiUsers size={20} />,
     },
     {
-      name: "Tạo nhân viên",
-      path: "/admin/create-staff",
+      name: "Quản lý nhân viên",
+      path: "/admin/staff",
       icon: <FiUserPlus size={20} />,
     },
     {
