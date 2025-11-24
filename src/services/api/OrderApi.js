@@ -16,10 +16,11 @@ export const getAllOrders = async (orderStatus = "all") => {
     });
     return response.data;
   } catch (error) {
-    // nếu lỗi 401 thì redrect về trang login
-    if (error.response.status === 403 || error.response.status === 401) {
+    if (error?.response?.status === 403 || error?.response?.status === 401) {
       window.location.href = "/sign-in";
-    } else return error.response?.data || "Lỗi kết nối đến server";
+    } else {
+      return error.response?.data || "Lỗi kết nối đến server";
+    }
   }
 };
 
@@ -74,5 +75,17 @@ export const getRevenue = async (year) => {
     return response.data;
   } catch (error) {
     return error.response?.data || "Lỗi kết nối đến server";
+  }
+};
+
+export const exportMonthlyRevenue = async (month, categoryId) => {
+  try {
+    const response = await AxiosInstance.get("/export/monthly-revenue", {
+      params: { month, categoryId },
+      responseType: "blob",
+    });
+    return response;
+  } catch (error) {
+    return error.response || "Lỗi kết nối đến server";
   }
 };

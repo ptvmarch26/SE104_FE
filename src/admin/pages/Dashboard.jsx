@@ -3,17 +3,24 @@ import { IoCartSharp } from "react-icons/io5";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import Chart from "react-apexcharts";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import { useUser } from "../../context/UserContext";
 import { useOrder } from "../../context/OrderContext";
-import { getRevenue } from "../../services/api/OrderApi";
-import { Select } from "antd";
+import { useCategories } from "../../context/CategoriesContext";
+import { getRevenue, exportMonthlyRevenue } from "../../services/api/OrderApi";
+import { Select, Button, DatePicker } from "antd";
+import { usePopup } from "../../context/PopupContext";
 
 function Dashboard() {
   const { fetchUser, fetchUsers } = useUser();
   const { fetchOrders } = useOrder();
+  const { categories, fetchCategories } = useCategories();
+  const { showPopup } = usePopup();
   const [users, setUsers] = useState();
   const [orders, setOrders] = useState();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [revenueData, setRevenueData] = useState({
     revenueByMonth: Array(12).fill({
       completedRevenue: 0,
@@ -21,6 +28,7 @@ function Dashboard() {
       cancelledRevenue: 0,
     }),
   });
+  const [exportingReport, setExportingReport] = useState(false);
   const { Option } = Select;
   const years = Array.from(
     { length: 6 },
@@ -35,6 +43,7 @@ function Dashboard() {
       } else {
         const usersData = await fetchUsers();
         const ordersData = await fetchOrders();
+        await fetchCategories();
         setUsers(usersData);
         setOrders(ordersData);
         fetchRevenueData(selectedYear);
@@ -58,6 +67,33 @@ function Dashboard() {
   const handleYearChange = (year) => {
     setSelectedYear(year);
     fetchRevenueData(year);
+  };
+
+  const handleExportMonthly = async () => {
+    const monthString = selectedMonth
+      ? selectedMonth.format("YYYY-MM")
+      : dayjs().format("YYYY-MM");
+    setExportingReport(true);
+    try {
+      const res = await exportMonthlyRevenue(monthString, selectedCategory);
+      if (res?.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `BaoCaoDoanhThu_${monthString}.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
+        showPopup("Xuất báo cáo tháng thành công");
+      } else {
+        showPopup("Xuất báo cáo tháng thất bại", false);
+      }
+    } catch (error) {
+      showPopup("Xuất báo cáo tháng thất bại", false);
+    } finally {
+      setExportingReport(false);
+    }
   };
 
   const totalRevenue = () => {
@@ -204,7 +240,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-8 flex justify-end mb-4">
+      <div className="mt-8 flex flex-wrap justify-end mb-4 gap-3 items-center">
         <div className="flex items-center gap-2">
           <label htmlFor="yearFilter" className="font-medium">
             Năm:
@@ -223,6 +259,49 @@ function Dashboard() {
             ))}
           </Select>
         </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="categoryFilter" className="font-medium">
+            Loại sản phẩm:
+          </label>
+          <Select
+            id="categoryFilter"
+            allowClear
+            placeholder="Tất cả"
+            className="min-w-[180px]"
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+          >
+            {categories.map((cat) => (
+              <Option key={cat._id} value={cat._id}>
+                {cat.category_type} - {cat.category_gender}
+              </Option>
+            ))}
+          </Select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="monthFilter" className="font-medium">
+            Tháng:
+          </label>
+          <DatePicker
+            id="monthFilter"
+            picker="month"
+            format="MM"
+            value={selectedMonth}
+            onChange={(value) => setSelectedMonth(value)}
+            className="rounded-none"
+          />
+        </div>
+
+        <Button
+          type="primary"
+          className="rounded-none"
+          loading={exportingReport}
+          onClick={handleExportMonthly}
+        >
+          Lập báo cáo tháng
+        </Button>
       </div>
 
       <div className="grid grid-cols-2 gap-6 mt-8">

@@ -24,6 +24,7 @@ import PurchaseReceipts from "../admin/pages/PurchaseReceipts";
 import WarrantyTickets from "../admin/pages/WarrantyTickets";
 import WarrantyTicketDetails from "../admin/pages/WarrantyTicketDetails";
 import Suppliers from "../admin/pages/Suppliers";
+import CreateStaff from "../admin/pages/CreateStaff";
 
 import Profile from "../pages/AccountPage/PageChildren/Profile";
 import EditEmail from "../pages/AccountPage/PageChildren/EditMail";
@@ -233,6 +234,11 @@ const adminRoutes = [
   {
     path: "/admin/customers",
     component: Customers,
+    Layout: AdminLayout,
+  },
+  {
+    path: "/admin/create-staff",
+    component: CreateStaff,
     Layout: AdminLayout,
   },
   {

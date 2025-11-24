@@ -6,13 +6,13 @@ import {
   FiUsers,
   FiTag,
   FiLogOut,
+  FiUserPlus,
 } from "react-icons/fi";
 import logo from "../../../assets/images/logo.png";
 import { useAuth } from "../../../context/AuthContext";
-import { IoStorefrontOutline } from "react-icons/io5";
+import { IoStorefrontOutline, IoReceiptOutline } from "react-icons/io5";
 import { GoHistory } from "react-icons/go";
 import { LuWarehouse } from "react-icons/lu";
-import { IoReceiptOutline } from "react-icons/io5";
 import { MdRoomService } from "react-icons/md";
 import { FaPeopleArrows } from "react-icons/fa6";
 
@@ -47,6 +47,11 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       name: "Quản lý khách hàng",
       path: "/admin/customers",
       icon: <FiUsers size={20} />,
+    },
+    {
+      name: "Tạo nhân viên",
+      path: "/admin/create-staff",
+      icon: <FiUserPlus size={20} />,
     },
     {
       name: "Quản lý nhà cung cấp",

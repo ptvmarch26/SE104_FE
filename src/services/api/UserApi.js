@@ -41,10 +41,7 @@ export const updateUser = async (userData) => {
 
 export const addAddress = async (addressData) => {
   try {
-    const response = await AxiosInstance.post(
-      "/user/address",
-      addressData
-    );
+    const response = await AxiosInstance.post("/user/address", addressData);
     return response.data;
   } catch (error) {
     return error.response?.data || "Lỗi kết nối đến server";
@@ -81,23 +78,34 @@ export const getDiscount = async () => {
   }
 };
 
-export const deleteSearch = async (index) => {
+export const createStaff = async (staffData) => {
   try {
-    const response = await AxiosInstance.delete(`/user/delete-search-history/${index}`);
+    const response = await AxiosInstance.post("/user/staff", staffData);
     return response.data;
   } catch (error) {
     return error.response?.data || "Lỗi kết nối đến server";
   }
-}
+};
+
+export const deleteSearch = async (index) => {
+  try {
+    const response = await AxiosInstance.delete(
+      `/user/delete-search-history/${index}`
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data || "Lỗi kết nối đến server";
+  }
+};
 
 export const getChatBotSearch = async (query) => {
   try {
-      const response = await AxiosInstance.get("/chat", {
-          params: { message: query },
-      });
+    const response = await AxiosInstance.get("/chat", {
+      params: { message: query },
+    });
 
-      return response.data;
+    return response.data;
   } catch (error) {
-      return error.response?.data || null;
+    return error.response?.data || null;
   }
 };
