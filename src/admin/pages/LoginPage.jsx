@@ -4,10 +4,11 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { usePopup } from "../../context/PopupContext";
+import { getDefaultAdminPath } from "../roleAccess";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { handleLogin, token } = useAuth();
+  const { handleLogin, token, userRole } = useAuth();
   const [passwordShown, setPasswordShown] = useState(false);
   const [error, setError] = useState({ username: "", password: "" });
   const [username, setUsername] = useState("");
@@ -18,9 +19,9 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/admin/dashboard", { replace: true });
+      navigate(getDefaultAdminPath(userRole), { replace: true });
     }
-  }, [token, navigate]);
+  }, [token, navigate, userRole]);
 
   const handleSubmitLogin = async () => {
     let newError = {};
@@ -35,17 +36,24 @@ const LoginPage = () => {
     }
 
     setError(newError);
-    // còn lỗi vặt ở hiển thị lỗi nào
-    const response = await handleLogin(username, password);
-    if (response?.EC === 0 && response?.result?.user.role === "admin") {
-      showPopup(`${response.EM}, Chào mừng bạn đến với trang quản trị`);
-      navigate("/admin/dashboard");
-    } else {
-      showPopup("Bạn không có quyền truy cập trang này", false);
-      setTimeout(() => {
-        window.location.href = "/sign-in";
-      }, 2000);
-      return;
+    try {
+      const response = await handleLogin(username, password);
+      const role = response?.result?.user?.role;
+      const allowedRoles = ["admin", "sales_staff", "warehouse_staff"];
+
+      if (response?.EC === 0) {
+        if (role && allowedRoles.includes(role))
+          showPopup(
+            `${response.EM}, Chào mừng bạn đến với trang quản trị viên`
+          );
+        else showPopup("Bạn không có quyền truy cập trang này", false);
+        navigate(getDefaultAdminPath(role));
+      } else {
+        showPopup("Tài khoản mật khẩu không chính xác", false);
+        return;
+      }
+    } catch (error) {
+      showPopup("Đã có lỗi xảy ra");
     }
   };
 
