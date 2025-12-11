@@ -73,6 +73,7 @@ const Products = () => {
 
       const res = await addProduct(newProduct);
       if (res?.EC === 0) {
+        showPopup("Thêm sản phẩm thành công");
         fetchProducts();
         form.resetFields();
         setIsAddProductModalVisible(false);
@@ -169,6 +170,7 @@ const Products = () => {
         fetchProducts();
         form.resetFields();
         setIsEditProductgModalVisible(false);
+        showPopup("Cập nhật sản phẩm thành công");
       }
     } catch {
       showPopup("Lỗi khi cập nhật sản phẩm", false);

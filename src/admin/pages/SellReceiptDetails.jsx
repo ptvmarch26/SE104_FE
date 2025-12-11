@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import moment from "moment";
 
 import { useSaleInvoice } from "../../context/SaleInvoiceContext";
+import WarrantyTicketCreateModal from "../components/WarrantyTicketCreateModal/WarrantyTicketCreateModal";
 
 const SellReceiptDetails = () => {
   const { id } = useParams();
   const { invoiceDetail, fetchSaleInvoiceById } = useSaleInvoice();
-
+  const [openCreate, setOpenCreate] = useState(false);
   useEffect(() => {
     fetchSaleInvoiceById(id);
   }, [id]);
@@ -95,6 +96,15 @@ const SellReceiptDetails = () => {
 
   return (
     <div className="lg:ml-[300px] mt-[64px] px-2 py-4 lg:p-6 min-h-screen bg-gray-100">
+      <div className="flex justify-end">
+        <Button
+          type="primary"
+          className="rounded-none"
+          onClick={() => setOpenCreate(true)}
+        >
+          Thêm phiếu bảo hành
+        </Button>
+      </div>
       <div className="bg-white flex flex-col sm:flex-row gap-5 justify-between sm:items-center p-6 shadow-lg rounded-lg mt-4">
         <p>
           <strong>Mã hóa đơn:</strong> {invoice_number}
@@ -154,6 +164,11 @@ const SellReceiptDetails = () => {
             <span>{remaining.toLocaleString()} đ</span>
           </div>
         </div>
+        <WarrantyTicketCreateModal
+          open={openCreate}
+          setOpen={setOpenCreate}
+          order={invoiceDetail}
+        />
       </div>
     </div>
   );

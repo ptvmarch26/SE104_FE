@@ -23,11 +23,11 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
 
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome size={20} /> },
-    {
-      name: "Quản lý đơn hàng",
-      path: "/admin/orders",
-      icon: <FiShoppingCart size={20} />,
-    },
+    // {
+    //   name: "Quản lý đơn hàng",
+    //   path: "/admin/orders",
+    //   icon: <FiShoppingCart size={20} />,
+    // },
     {
       name: "Quản lý danh mục",
       path: "/admin/categories",
@@ -38,16 +38,16 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       path: "/admin/products",
       icon: <FiBox size={20} />,
     },
-    {
-      name: "Quản lý mã giảm giá",
-      path: "/admin/discounts",
-      icon: <FiTag size={20} />,
-    },
-    {
-      name: "Quản lý khách hàng",
-      path: "/admin/customers",
-      icon: <FiUsers size={20} />,
-    },
+    // {
+    //   name: "Quản lý mã giảm giá",
+    //   path: "/admin/discounts",
+    //   icon: <FiTag size={20} />,
+    // },
+    // {
+    //   name: "Quản lý khách hàng",
+    //   path: "/admin/customers",
+    //   icon: <FiUsers size={20} />,
+    // },
     {
       name: "Quản lý nhân viên",
       path: "/admin/staff",
@@ -78,16 +78,16 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       path: "/admin/warehouses",
       icon: <LuWarehouse size={20} />,
     },
-    {
-      name: "Cửa hàng của tôi",
-      path: "/admin/my-store",
-      icon: <IoStorefrontOutline size={20} />,
-    },
-    {
-      name: "Lịch sử đăng nhập",
-      path: "/admin/history",
-      icon: <GoHistory size={20} />,
-    },
+    // {
+    //   name: "Cửa hàng của tôi",
+    //   path: "/admin/my-store",
+    //   icon: <IoStorefrontOutline size={20} />,
+    // },
+    // {
+    //   name: "Lịch sử đăng nhập",
+    //   path: "/admin/history",
+    //   icon: <GoHistory size={20} />,
+    // },
   ];
 
   const handleLogoClick = () => {

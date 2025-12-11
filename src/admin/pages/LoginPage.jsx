@@ -35,8 +35,13 @@ const LoginPage = () => {
     }
 
     setError(newError);
-    // còn lỗi vặt ở hiển thị lỗi nào
+
+    if (Object.keys(newError).length > 0) {
+      return;
+    }
+
     const response = await handleLogin(username, password);
+
     if (response?.EC === 0 && response?.result?.user.role === "admin") {
       showPopup(`${response.EM}, Chào mừng bạn đến với trang quản trị`);
       navigate("/admin/dashboard");
@@ -45,7 +50,6 @@ const LoginPage = () => {
       setTimeout(() => {
         window.location.href = "/sign-in";
       }, 2000);
-      return;
     }
   };
 

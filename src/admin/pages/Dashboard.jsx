@@ -206,8 +206,8 @@ function Dashboard() {
 
   return (
     <div className="lg:ml-[300px] mt-[64px] px-2 py-4 lg:p-6 min-h-screen">
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
-        <div className="bg-white flex gap-5 py-6 px-2 rounded-lg shadow-lg">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6 mt-4">
+        {/* <div className="bg-white flex gap-5 py-6 px-2 rounded-lg shadow-lg">
           <div className="bg-blue-500 w-20 h-20 rounded-md flex items-center justify-center">
             <LiaUsersSolid className="text-white text-[40px]" />
           </div>
@@ -215,7 +215,7 @@ function Dashboard() {
             <p className="text-xl font-medium">Khách hàng</p>
             <p className="text-[26px] font-bold">{dashboardData.totalUsers}</p>
           </div>
-        </div>
+        </div> */}
 
         <div className="bg-white flex gap-5 py-6 px-2 rounded-lg shadow-lg">
           <div className="bg-yellow-500 w-20 h-20 rounded-md flex items-center justify-center">

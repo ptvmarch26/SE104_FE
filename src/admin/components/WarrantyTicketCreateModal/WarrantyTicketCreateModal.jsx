@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal, Select, Input, Button } from "antd";
-import { useProduct } from "../../../context/ProductContext";
 import { usePopup } from "../../../context/PopupContext";
 import { useWarranty } from "../../../context/WarrantyContext";
 import { useUser } from "../../../context/UserContext";
@@ -8,64 +7,48 @@ import { useUser } from "../../../context/UserContext";
 const { Option } = Select;
 
 const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
-  const { fetchProducts } = useProduct();
-  const { handleCreateTicket } = useWarranty();
   const { showPopup } = usePopup();
+  const { handleCreateTicket } = useWarranty();
   const { selectedUser } = useUser();
 
   const [ticketType, setTicketType] = useState("Bảo hành");
-
-  const [selectedProductIndex, setSelectedProductIndex] = useState(null); // dùng index
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [condition, setCondition] = useState("");
   const [reason, setReason] = useState("");
   const [solution, setSolution] = useState("");
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const selectedItem = selectedIndex !== null ? order.items[selectedIndex] : null;
 
   const resetForm = () => {
     setTicketType("Bảo hành");
-    setSelectedProductIndex(null);
-    setSelectedProduct(null);
+    setSelectedIndex(null);
     setCondition("");
     setReason("");
     setSolution("");
   };
 
-  const handleSelectProduct = (index) => {
-    const p = order.products[index];
-
-    setSelectedProductIndex(index);
-
-    setSelectedProduct({
-      product_id: p.product_id._id,
-      color: p.color,
-      size: p.variant,
-    });
-  };
-
   const handleSubmit = async () => {
-    if (!selectedProduct || !condition || !reason || !solution) {
+    if (!selectedItem || !condition || !reason || !solution) {
       return showPopup("Vui lòng nhập đầy đủ thông tin!", false);
     }
 
     const res = await handleCreateTicket({
-      customer_name: order?.shipping_address.name,
-      customer_phone: order?.shipping_address.phone,
+      customer_name: order.customer_name,
+      customer_phone: order.customer_phone,
       ticket_type: ticketType,
+
+      // ---- PRODUCT OBJECT GỬI ĐÚNG ĐỊNH DẠNG BACKEND YÊU CẦU ----
       product: {
-        order_id: order._id,
-        product_id: selectedProduct.product_id,
-        color: selectedProduct.color,
-        size: selectedProduct.size,
+        invoice_id: order._id,                     // ⚡ BACKEND yêu cầu field này
+        product_id: selectedItem.product._id,       // Chuẩn
+        color: selectedItem.color_name,
+        size: selectedItem.variant_size
       },
+
       condition,
       reason,
       solution,
-      staff: selectedUser?._id,
+      staff: selectedUser?._id
     });
 
     if (res.EC === 0) {
@@ -85,66 +68,66 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
       width={700}
       footer={null}
     >
+      {/* Loại phiếu + khách hàng */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="font-semibold mb-1">Loại phiếu</label>
-          <Select
-            value={ticketType}
-            onChange={setTicketType}
-            className="w-full"
-          >
+          <label className="font-semibold">Loại phiếu</label>
+          <Select value={ticketType} onChange={setTicketType} className="w-full">
             <Option value="Bảo hành">Bảo hành</Option>
             <Option value="Đổi trả">Đổi trả</Option>
           </Select>
         </div>
 
         <div>
-          <label className="font-semibold mb-1">Khách hàng</label>
-          <Input value={order?.shipping_address.name} disabled />
+          <label className="font-semibold">Khách hàng</label>
+          <Input value={order.customer_name} disabled />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 mb-4">
-        <label className="font-semibold mb-1">Sản phẩm</label>
+      {/* Chọn sản phẩm */}
+      <div className="mb-4">
+        <label className="font-semibold">Sản phẩm trong hóa đơn</label>
         <Select
-          placeholder="Chọn sản phẩm trong đơn"
-          value={selectedProductIndex}
-          onChange={handleSelectProduct}
+          placeholder="Chọn sản phẩm đã mua"
+          value={selectedIndex}
+          onChange={setSelectedIndex}
           className="w-full"
         >
-          {order?.products.map((p, idx) => (
+          {order.items.map((item, idx) => (
             <Option key={idx} value={idx}>
-              {p.product_id.product_title} — {p.color}/{p.variant}
+              {item.product.product_title} — {item.color_name}/{item.variant_size}
             </Option>
           ))}
         </Select>
       </div>
 
-      {selectedProduct && (
+      {/* Hiển thị biến thể đã mua */}
+      {selectedItem && (
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="font-semibold mb-1">Màu (đã mua)</label>
-            <Input value={selectedProduct.color} disabled />
+            <label className="font-semibold">Màu</label>
+            <Input value={selectedItem.color_name} disabled />
           </div>
           <div>
-            <label className="font-semibold mb-1">Size (đã mua)</label>
-            <Input value={selectedProduct.size} disabled />
+            <label className="font-semibold">Size</label>
+            <Input value={selectedItem.variant_size} disabled />
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 mb-4">
+      {/* Form nhập nội dung phiếu */}
+      <div className="grid gap-4 mb-4">
         <div>
-          <label className="font-semibold mb-1">Tình trạng</label>
+          <label className="font-semibold">Tình trạng</label>
           <Input
-            placeholder="VD: lỗi đường may, bung chỉ..."
+            placeholder="VD: lỗi keo, bung chỉ..."
             value={condition}
             onChange={(e) => setCondition(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="font-semibold mb-1">Lý do</label>
+          <label className="font-semibold">Lý do</label>
           <Input.TextArea
             rows={3}
             value={reason}
@@ -153,7 +136,7 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
         </div>
 
         <div>
-          <label className="font-semibold mb-1">Phương án xử lý</label>
+          <label className="font-semibold">Phương án xử lý</label>
           <Input.TextArea
             rows={3}
             value={solution}
@@ -162,10 +145,10 @@ const WarrantyTicketCreateModal = ({ open, setOpen, order }) => {
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 mt-4">
+      <div className="flex justify-end gap-3">
         <Button onClick={() => setOpen(false)}>Hủy</Button>
         <Button type="primary" onClick={handleSubmit}>
-          Thêm
+          Thêm phiếu
         </Button>
       </div>
     </Modal>
