@@ -23,7 +23,7 @@ export const login = async (user_name, password) => {
     });
     return res.data;
   } catch (error) {
-    return error.response?.data || "Lỗi kết nối đến server";
+    return error || "Lỗi kết nối đến server";
   }
 };
 

@@ -10,16 +10,20 @@ import {
 } from "react-icons/fi";
 import logo from "../../../assets/images/logo.png";
 import { useAuth } from "../../../context/AuthContext";
+import { useUser } from "../../../context/UserContext";
 import { IoStorefrontOutline, IoReceiptOutline } from "react-icons/io5";
 import { GoHistory } from "react-icons/go";
 import { LuWarehouse } from "react-icons/lu";
 import { MdRoomService } from "react-icons/md";
 import { FaPeopleArrows } from "react-icons/fa6";
+import { getDefaultAdminPath } from "../../roleAccess";
 
 function SidebarComponent({ isOpen, toggleSidebar }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { handleLogout, token } = useAuth();
+  const { handleLogout, token, userRole } = useAuth();
+  const { selectedUser } = useUser();
+  const role = userRole || selectedUser?.role;
 
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome size={20} /> },
@@ -28,15 +32,18 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
     //   path: "/admin/orders",
     //   icon: <FiShoppingCart size={20} />,
     // },
+
     {
       name: "Quản lý danh mục",
       path: "/admin/categories",
       icon: <FiBox size={20} />,
+      roles: ["admin", "sales_staff"],
     },
     {
       name: "Quản lý sản phẩm",
       path: "/admin/products",
       icon: <FiBox size={20} />,
+      roles: ["admin", "sales_staff"],
     },
     // {
     //   name: "Quản lý mã giảm giá",
@@ -52,31 +59,37 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
       name: "Quản lý nhân viên",
       path: "/admin/staff",
       icon: <FiUserPlus size={20} />,
+      roles: ["admin"],
     },
     {
       name: "Quản lý nhà cung cấp",
       path: "/admin/suppliers",
       icon: <FaPeopleArrows size={20} />,
+      roles: ["admin", "warehouse_staff"],
     },
     {
       name: "Quản lý phiếu bán hàng",
       path: "/admin/sell-receipts",
       icon: <IoReceiptOutline size={20} />,
+      roles: ["admin", "sales_staff"],
     },
     {
       name: "Quản lý phiếu nhập hàng",
       path: "/admin/purchase-receipts",
       icon: <IoReceiptOutline size={20} />,
+      roles: ["admin", "warehouse_staff"],
     },
     {
       name: "Quản lý phiếu bảo hành",
       path: "/admin/warranty-tickets",
       icon: <MdRoomService size={20} />,
+      roles: ["admin"],
     },
     {
       name: "Quản lý kho",
       path: "/admin/warehouses",
       icon: <LuWarehouse size={20} />,
+      roles: ["admin", "warehouse_staff"],
     },
     // {
     //   name: "Cửa hàng của tôi",
@@ -90,9 +103,13 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
     // },
   ];
 
+  const filteredMenuItems = menuItems.filter(
+    (item) => !item.roles || (role && item.roles.includes(role))
+  );
+
   const handleLogoClick = () => {
     if (token) {
-      navigate("/admin/dashboard");
+      navigate(getDefaultAdminPath(role));
     } else {
       navigate("/admin");
     }
@@ -123,7 +140,7 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
 
         <nav>
           <ul className="space-y-2">
-            {menuItems.map((item) => (
+            {filteredMenuItems.map((item) => (
               <li key={item.path} onClick={toggleSidebar}>
                 <Link
                   to={item.path}

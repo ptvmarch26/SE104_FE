@@ -15,6 +15,9 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(
     localStorage.getItem("accessToken") || null
   );
+  const [userRole, setUserRole] = useState(
+    localStorage.getItem("userRole") || null
+  );
 
   useEffect(() => {
     if (token) {
@@ -23,6 +26,14 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("accessToken");
     }
   }, [token]);
+
+  useEffect(() => {
+    if (userRole) {
+      localStorage.setItem("userRole", userRole);
+    } else {
+      localStorage.removeItem("userRole");
+    }
+  }, [userRole]);
 
   const handleSignUp = async (user_name, email, password) => {
     const data = await signUp(user_name, email, password);
@@ -35,14 +46,18 @@ export const AuthProvider = ({ children }) => {
       setToken(data?.result?.accessToken);
       localStorage.setItem("accessToken", data.result.accessToken);
       localStorage.setItem("refreshToken", data.result.refreshToken);
+      const role = data?.result?.user?.role || null;
+      setUserRole(role);
     }
     return data;
   };
 
   const handleLogout = () => {
     setToken(null);
+    setUserRole(null);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userRole");
   };
 
   const handleSendOTP = async (email) => {
@@ -79,6 +94,8 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         token,
+        userRole,
+        setUserRole,
         handleSignUp,
         handleLogin,
         handleLogout,

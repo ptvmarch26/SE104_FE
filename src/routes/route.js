@@ -160,106 +160,130 @@ const privateRoutes = [
   },
 ];
 
+const ADMIN_ONLY = ["admin"];
+const ADMIN_AND_SALES = ["admin", "sales_staff"];
+const ADMIN_AND_WAREHOUSE = ["admin", "warehouse_staff"];
+
 const adminRoutes = [
   {
     path: "/admin/",
     component: LoginPage,
+    isProtected: false,
     // Layout: AdminLayout,
   },
   {
     path: "/admin/dashboard",
     component: Dashboard,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/orders",
     component: Orders,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/order-details/:id",
     component: OrderDetails,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/products",
     component: Products,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_SALES,
   },
   {
     path: "/admin/product-details/:id",
     component: ProductDetails,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_SALES,
   },
   {
     path: "/admin/suppliers",
     component: Suppliers,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_WAREHOUSE,
   },
   {
     path: "/admin/sell-receipts",
     component: SellReceipts,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_SALES,
   },
   {
     path: "/admin/sell-receipt/:id",
     component: SellReceiptDetails,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_SALES,
   },
   {
     path: "/admin/purchase-receipts",
     component: PurchaseReceipts,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_WAREHOUSE,
   },
   {
     path: "/admin/warranty-tickets",
     component: WarrantyTickets,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/warranty-ticket/:id",
     component: WarrantyTicketDetails,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/warehouses",
     component: Warehouses,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_WAREHOUSE,
   },
   {
     path: "/admin/categories",
     component: Categories,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_AND_SALES,
   },
   {
     path: "/admin/customers",
     component: Customers,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/staff",
     component: Staff,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/discounts",
     component: Discounts,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/my-store",
     component: MyStore,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/history",
     component: LoginHistory,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
   {
     path: "/admin/history/:id",
     component: LoginHistoryDetails,
     Layout: AdminLayout,
+    allowedRoles: ADMIN_ONLY,
   },
 ];
 

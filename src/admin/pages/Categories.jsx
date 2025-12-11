@@ -6,7 +6,6 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import { useCategories } from "../../context/CategoriesContext";
-import { useUser } from "../../context/UserContext";
 import { usePopup } from "../../context/PopupContext";
 
 const { Option } = Select;
@@ -23,7 +22,6 @@ const Categories = () => {
   const [isEditCategoryModalVisible, setIsEditCategoryModalVisible] =
     useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const { fetchUser } = useUser();
   const { showPopup } = usePopup();
 
   const {
@@ -42,15 +40,7 @@ const Categories = () => {
   });
 
   useEffect(() => {
-    const fetchCategoriesData = async () => {
-      const user = await fetchUser();
-      if (user?.result?.role !== "admin") {
-        window.location.href = "/sign-in";
-      } else {
-        fetchCategories();
-      }
-    };
-    fetchCategoriesData();
+    fetchCategories();
   }, []);
 
   const handleDelete = async () => {
