@@ -82,7 +82,6 @@ const PurchaseOrderCreateModal = ({ open, setOpen }) => {
     },
     { title: "Màu", dataIndex: "color_name" },
     { title: "Size", dataIndex: "variant_size" },
-    { title: "Đơn vị", dataIndex: "unit" },
     { title: "Số lượng", dataIndex: "quantity" },
     {
       title: "Đơn giá",
@@ -95,8 +94,6 @@ const PurchaseOrderCreateModal = ({ open, setOpen }) => {
       render: (v) => v.toLocaleString() + "đ",
     },
   ];
-
-  const productUnits = ["Cái", "Đôi"];
 
   return (
     <Modal
@@ -176,17 +173,6 @@ const PurchaseOrderCreateModal = ({ open, setOpen }) => {
                   {v.variant_size}
                 </Option>
               ))}
-          </Select>
-        </div>
-
-        <div className="flex flex-col">
-          <label className="text-sm font-semibold mb-1">Đơn vị tính</label>
-          <Select placeholder="Đơn vị" value={unit} onChange={setUnit}>
-            {productUnits.map((u) => (
-              <Option key={u} value={u}>
-                {u}
-              </Option>
-            ))}
           </Select>
         </div>
 
