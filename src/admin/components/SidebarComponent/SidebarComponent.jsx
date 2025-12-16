@@ -26,7 +26,12 @@ function SidebarComponent({ isOpen, toggleSidebar }) {
   const role = userRole || selectedUser?.role;
 
   const menuItems = [
-    { name: "Dashboard", path: "/admin/dashboard", icon: <FiHome size={20} /> },
+    {
+      name: "Dashboard",
+      path: "/admin/dashboard",
+      icon: <FiHome size={20} />,
+      roles: ["admin"],
+    },
     // {
     //   name: "Quản lý đơn hàng",
     //   path: "/admin/orders",
